@@ -1,4 +1,5 @@
-﻿USE [master]
+﻿USE
 GO
   
-CREATE DATABASE [PROYECTO]
+CREATE DATABASE Restaurante
+
