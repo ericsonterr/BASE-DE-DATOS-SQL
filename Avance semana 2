@@ -1,0 +1,38 @@
+USE Restaurante;
+GO
+
+CREATE TABLE Clientes
+(
+    ClienteID INT PRIMARY KEY,
+    Nombre NVARCHAR(50),
+    Apellido NVARCHAR(50),
+    Telefono NVARCHAR(20),
+    Correo NVARCHAR(50)
+);
+
+CREATE TABLE Productos 
+(
+    ProductoID INT PRIMARY KEY,
+    Nombre NVARCHAR(50),
+    Precio DECIMAL(10,2),
+    Categoria NVARCHAR(50)
+);
+
+CREATE TABLE Pedidos 
+(
+    PedidoID INT PRIMARY KEY,
+    Fecha DATE,
+    ClienteID INT,
+    Total DECIMAL(10,2),
+    CONSTRAINT FK_Pedidos_Clientes FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID)
+);
+
+INSERT INTO Clientes (ClienteID, Nombre, Apellido, Telefono, Correo)
+VALUES 
+(1, 'Juan', 'Pérez', '987654321', 'juanperez@gmail.com'),
+(2, 'María', 'López', '912345678', 'marialopez@gmail.com');
+
+INSERT INTO Productos (ProductoID, Nombre, Precio, Categoria)
+VALUES
+(1, 'Pizza', 25.50, 'Comida'),
+(2, 'Coca Cola', 5.00, 'Bebida');
