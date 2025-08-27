@@ -29,10 +29,10 @@ CREATE TABLE Pedidos
 
 INSERT INTO Clientes (ClienteID, Nombre, Apellido, Telefono, Correo)
 VALUES 
-(1, 'Juan', 'Pérez', '987654321', 'juanperez@gmail.com'),
-(2, 'María', 'López', '912345678', 'marialopez@gmail.com');
+(1, 'Daniel', 'Torres', '953438518', 'danieltorres@gmail.com'),
+(2, 'Andrea', 'Vargas', '912945618', 'andreavargas@gmail.com');
 
 INSERT INTO Productos (ProductoID, Nombre, Precio, Categoria)
 VALUES
-(1, 'Pizza', 25.50, 'Comida'),
-(2, 'Coca Cola', 5.00, 'Bebida');
+(1, 'Pizza', 20.50, 'Comida'),
+(2, 'Inka Cola', 5.00, 'Bebida');
