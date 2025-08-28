@@ -1,0 +1,57 @@
+USE Restaurante;
+GO
+
+CREATE TABLE Clientes
+(
+    ClienteID INT PRIMARY KEY,
+    Nombre NVARCHAR(50),
+    Apellido NVARCHAR(50),
+    Telefono NVARCHAR(20),
+    Correo NVARCHAR(50)
+);
+
+CREATE TABLE Productos 
+(
+    ProductoID INT PRIMARY KEY,
+    Nombre NVARCHAR(50),
+    Precio DECIMAL(10,2),
+    Categoria NVARCHAR(50)
+);
+
+CREATE TABLE Pedidos 
+(
+    PedidoID INT PRIMARY KEY,
+    Fecha DATE,
+    ClienteID INT,
+    Total DECIMAL(10,2),
+    CONSTRAINT FK_Pedidos_Clientes FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID)
+);
+
+INSERT INTO Clientes (ClienteID, Nombre, Apellido, Telefono, Correo)
+VALUES 
+(1, 'Daniel', 'Torres', '953438518', 'danieltorres@gmail.com'),
+(2, 'Andrea', 'Vargas', '912945618', 'andreavargas@gmail.com');
+
+INSERT INTO Productos (ProductoID, Nombre, Precio, Categoria)
+VALUES
+(1, 'Pizza', 20.50, 'Comida'),
+(2, 'Inka Cola', 5.00, 'Bebida');
+
+INSERT INTO Pedidos (PedidoID, Fecha, ClienteID, Total)
+VALUES
+(1, '2025-08-25', 1, 25.50),
+(2, '2025-08-26', 2, 20.50);
+
+SELECT p.PedidoID, p.Fecha, c.Nombre, c.Apellido, p.Total
+FROM Pedidos p
+INNER JOIN Clientes c ON p.ClienteID = c.ClienteID;
+
+SELECT p.PedidoID, p.Fecha, c.Nombre, c.Apellido, p.Total
+FROM Pedidos p
+INNER JOIN Clientes c ON p.ClienteID = c.ClienteID
+WHERE c.Nombre = 'Andrea';
+
+SELECT p.PedidoID, p.Fecha, c.Nombre, c.Apellido, p.Total
+FROM Pedidos p
+INNER JOIN Clientes c ON p.ClienteID = c.ClienteID
+ORDER BY p.Fecha;
