@@ -1,0 +1,71 @@
+USE Restaurante;
+GO
+
+(
+    ClienteID INT PRIMARY KEY,
+    Nombre NVARCHAR(50),
+    Apellido NVARCHAR(50),
+    Telefono NVARCHAR(20),
+    Correo NVARCHAR(50)
+);
+
+(
+    ProductoID INT PRIMARY KEY,
+    Nombre NVARCHAR(50),
+    Precio DECIMAL(10,2),
+    Categoria NVARCHAR(50)
+);
+
+(
+    PedidoID INT PRIMARY KEY,
+    Fecha DATE,
+    ClienteID INT,
+    Total DECIMAL(10,2),
+    CONSTRAINT FK_Pedidos_Clientes FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID)
+);
+
+(
+    DetalleID INT PRIMARY KEY,
+    PedidoID INT,
+    ProductoID INT,
+    Cantidad INT,
+    CONSTRAINT FK_DetallePedidos_Pedidos FOREIGN KEY (PedidoID) REFERENCES Pedidos(PedidoID),
+    CONSTRAINT FK_DetallePedidos_Productos FOREIGN KEY (ProductoID) REFERENCES Productos(ProductoID)
+);
+
+
+INSERT INTO Clientes (ClienteID, Nombre, Apellido, Telefono, Correo)
+VALUES 
+(1, 'Daniel', 'Torres', '953438518', 'danieltorres@gmail.com'),
+(2, 'Andrea', 'Vargas', '912945618', 'andreavargas@gmail.com');
+
+INSERT INTO Productos (ProductoID, Nombre, Precio, Categoria)
+VALUES
+(1, 'Pizza', 20.50, 'Comida'),
+(2, 'Inka Cola', 5.00, 'Bebida');
+
+INSERT INTO Pedidos (PedidoID, Fecha, ClienteID, Total)
+VALUES
+(1, '2025-08-25', 1, 25.50),
+(2, '2025-08-26', 2, 20.50);
+
+INSERT INTO DetallePedidos (DetalleID, PedidoID, ProductoID, Cantidad)
+VALUES
+(1, 1, 1, 1), -- Pedido 1: Daniel compra 1 Pizza
+(2, 1, 2, 1), -- Pedido 1: Daniel compra 1 Inka Cola
+(3, 2, 1, 1); -- Pedido 2: Andrea compra 1 Pizza
+
+SELECT 
+    p.PedidoID, 
+    p.Fecha, 
+    c.Nombre, 
+    c.Apellido, 
+    pr.Nombre AS Producto,
+    dp.Cantidad,
+    p.Total
+FROM Pedidos p
+INNER JOIN Clientes c ON p.ClienteID = c.ClienteID
+INNER JOIN DetallePedidos dp ON p.PedidoID = dp.PedidoID
+INNER JOIN Productos pr ON dp.ProductoID = pr.ProductoID
+WHERE c.Nombre = 'Andrea' OR c.Nombre = 'Daniel'
+ORDER BY p.Fecha;
