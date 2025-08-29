@@ -42,16 +42,14 @@ VALUES
 (1, '2025-08-25', 1, 25.50),
 (2, '2025-08-26', 2, 20.50);
 
-SELECT p.PedidoID, p.Fecha, c.Nombre, c.Apellido, p.Total
-FROM Pedidos p
-INNER JOIN Clientes c ON p.ClienteID = c.ClienteID;
-
-SELECT p.PedidoID, p.Fecha, c.Nombre, c.Apellido, p.Total
-FROM Pedidos p
-INNER JOIN Clientes c ON p.ClienteID = c.ClienteID
-WHERE c.Nombre = 'Andrea';
-
-SELECT p.PedidoID, p.Fecha, c.Nombre, c.Apellido, p.Total
+-- Consulta única aplicando INNER JOIN + WHERE + ORDER BY
+SELECT 
+    p.PedidoID, 
+    p.Fecha, 
+    c.Nombre, 
+    c.Apellido, 
+    p.Total
 FROM Pedidos p
 INNER JOIN Clientes c ON p.ClienteID = c.ClienteID
+WHERE c.Nombre = 'Andrea' OR c.Nombre = 'Daniel'
 ORDER BY p.Fecha;
