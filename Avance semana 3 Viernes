@@ -1,0 +1,85 @@
+USE Restaurante;
+GO
+
+CREATE TABLE Clientes
+(
+    ClienteID INT PRIMARY KEY,
+    Nombre NVARCHAR(50),
+    Apellido NVARCHAR(50),
+    Telefono NVARCHAR(20),
+    Correo NVARCHAR(50)
+);
+
+CREATE TABLE Productos 
+(
+    ProductoID INT PRIMARY KEY,
+    Nombre NVARCHAR(50),
+    Precio DECIMAL(10,2),
+    Categoria NVARCHAR(50)
+);
+
+CREATE TABLE Pedidos 
+(
+    PedidoID INT PRIMARY KEY,
+    Fecha DATE,
+    ClienteID INT,
+    Total DECIMAL(10,2),
+    CONSTRAINT FK_Pedidos_Clientes FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID)
+);
+
+CREATE TABLE DetallePedidos
+(
+    DetalleID INT PRIMARY KEY,
+    PedidoID INT,
+    ProductoID INT,
+    Cantidad INT,
+    CONSTRAINT FK_DetallePedidos_Pedidos FOREIGN KEY (PedidoID) REFERENCES Pedidos(PedidoID),
+    CONSTRAINT FK_DetallePedidos_Productos FOREIGN KEY (ProductoID) REFERENCES Productos(ProductoID)
+);
+
+INSERT INTO Clientes (ClienteID, Nombre, Apellido, Telefono, Correo)
+VALUES 
+(1, 'Daniel', 'Torres', '953438518', 'danieltorres@gmail.com'),
+(2, 'Andrea', 'Vargas', '912945618', 'andreavargas@gmail.com'),
+(3, 'Ángel', 'Ramírez', '987654321', 'angelramirez@gmail.com'),
+(4, 'Romina', 'Fernández', '976543210', 'rominafernandez@gmail.com');
+
+INSERT INTO Productos (ProductoID, Nombre, Precio, Categoria)
+VALUES
+(1, 'Pizza', 20.50, 'Comida'),
+(2, 'Inka Cola', 5.00, 'Bebida'),
+(3, 'Hamburguesa', 15.00, 'Comida'),
+(4, 'Agua', 3.00, 'Bebida');
+
+INSERT INTO Pedidos (PedidoID, Fecha, ClienteID, Total)
+VALUES
+(1, '2025-08-25', 1, 25.50), -- Daniel
+(2, '2025-08-26', 2, 20.50), -- Andrea
+(3, '2025-08-27', 3, 18.00), -- Ángel
+(4, '2025-08-28', 4, 23.00); -- Romina
+
+INSERT INTO DetallePedidos (DetalleID, PedidoID, ProductoID, Cantidad)
+VALUES
+(1, 1, 1, 1), -- Daniel compra 1 Pizza
+(2, 1, 2, 1), -- Daniel compra 1 Inka Cola
+(3, 2, 1, 1), -- Andrea compra 1 Pizza
+(4, 3, 3, 1), -- Ángel compra 1 Hamburguesa
+(5, 3, 4, 1), -- Ángel compra 1 Agua
+(6, 4, 1, 1), -- Romina compra 1 Pizza
+(7, 4, 2, 1); -- Romina compra 1 Inka Cola
+
+
+SELECT 
+    p.PedidoID, 
+    p.Fecha, 
+    c.Nombre, 
+    c.Apellido, 
+    pr.Nombre AS Producto,
+    dp.Cantidad,
+    p.Total
+FROM Pedidos p
+INNER JOIN Clientes c ON p.ClienteID = c.ClienteID
+INNER JOIN DetallePedidos dp ON p.PedidoID = dp.PedidoID
+INNER JOIN Productos pr ON dp.ProductoID = pr.ProductoID
+WHERE c.Nombre IN ('Andrea','Daniel','Ángel','Romina')
+ORDER BY p.Fecha;
