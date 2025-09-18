@@ -3,9 +3,8 @@ https://drive.google.com/drive/folders/1_CaRcTbOsJmPu4x_LRSKJAqwTnJuc4bJ?usp=dri
 USE [Base de datos Adventure];
 GO
 
--- CONSULTA 1: SELECT + WHERE + ORDER BY + CASE + SUBCONSULTA
 -- Productos entre 100 y 500, con CASE para mostrar color
--- y una subconsulta que cuenta cuántas veces se vendió
+   y una subconsulta que cuenta cuántas veces se vendió
 
 SELECT p.ProductID,
 p.Name AS Producto,
@@ -23,9 +22,7 @@ AND p.Color IN ('Red', 'Black', 'Silver')
 ORDER BY VecesVendido DESC;
 
 
--- CONSULTA 2: INNER JOIN
 -- Empleados con su nombre completo, puesto y departamento
-
 SELECT e.BusinessEntityID,
 p.FirstName + ' ' + p.LastName AS Empleado,
 e.JobTitle,
@@ -41,9 +38,7 @@ WHERE e.BirthDate > '1980-01-01'
 ORDER BY d.Name;
 
 
--- CONSULTA 3: LEFT JOIN + IS NULL
 -- Clientes que no tienen pedidos
-
 SELECT c.CustomerID,
 p.FirstName + ' ' + p.LastName AS Cliente,
 so.SalesOrderID
@@ -55,9 +50,7 @@ ON c.CustomerID = so.CustomerID
 WHERE so.SalesOrderID IS NULL;
 
 
--- CONSULTA 4: RIGHT JOIN
 -- Pedidos con información de sus vendedores (aunque no haya coincidencia)
-
 SELECT soh.SalesOrderID, sp.BusinessEntityID, p.FirstName, p.LastName
 FROM Sales.SalesOrderHeader soh
 RIGHT JOIN Sales.SalesPerson sp
@@ -66,27 +59,20 @@ INNER JOIN Person.Person p
 ON sp.BusinessEntityID = p.BusinessEntityID;
 
 
--- CONSULTA 5: FULL JOIN
 -- Comparar productos con sus ventas (incluso si no hay ventas)
-
 SELECT p.ProductID, p.Name AS Producto, sod.SalesOrderID
 FROM Production.Product p
 FULL JOIN Sales.SalesOrderDetail sod
 ON p.ProductID = sod.ProductID;
 
 
--- CONSULTA 6: CROSS JOIN
 -- Combinación de 5 productos y 5 monedas (ejemplo de combinatoria)
-
 SELECT TOP 5 p.Name AS Producto, c.Name AS Moneda
 FROM Production.Product p
 CROSS JOIN Sales.Currency c;
 
 
-
--- CONSULTA 7: GROUP BY + HAVING + Funciones de grupo
 -- Cantidad de pedidos por cliente, solo los que tienen más de 5 pedidos
-
 SELECT c.CustomerID,
 COUNT(soh.SalesOrderID) AS CantidadPedidos
 FROM Sales.Customer c
@@ -96,9 +82,7 @@ GROUP BY c.CustomerID
 HAVING COUNT(soh.SalesOrderID) > 5;
 
 
--- CONSULTA 8: EXISTS / NOT EXISTS
 -- Productos que sí tienen ventas registradas
-
 SELECT p.ProductID, p.Name
 FROM Production.Product p
 WHERE EXISTS (
@@ -117,9 +101,7 @@ WHERE sod.ProductID = p.ProductID
 );
 
 
--- CONSULTA 9: Subconsulta con IN
 -- Clientes que han realizado al menos un pedido mayor a 5000
-
 SELECT c.CustomerID, p.FirstName, p.LastName
 FROM Sales.Customer c
 INNER JOIN Person.Person p
@@ -131,9 +113,7 @@ WHERE TotalDue > 5000
 );
 
 
--- CONSULTA 10: UNION
 -- Lista de apellidos que empiezan con S o T
-
 SELECT LastName AS Apellido
 FROM Person.Person
 WHERE LastName LIKE 'S%'
