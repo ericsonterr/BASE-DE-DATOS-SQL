@@ -1,1 +1,58 @@
 https://drive.google.com/drive/folders/1_CaRcTbOsJmPu4x_LRSKJAqwTnJuc4bJ?usp=drive_link
+
+USE [Base de datos Adventure];
+GO
+
+-- 10 empleados con su ID, puesto y fecha de nacimiento
+SELECT TOP 10 BusinessEntityID, JobTitle, BirthDate
+FROM HumanResources.Employee;
+
+-- 10 productos con su ID, nombre y precio
+SELECT TOP 10 ProductID, Name, ListPrice
+FROM Production.Product;
+
+-- Empleados nacidos después de 1980, ordenados por fecha
+SELECT BusinessEntityID, JobTitle, BirthDate
+FROM HumanResources.Employee
+WHERE BirthDate > '1980-01-01'
+ORDER BY BirthDate ASC;
+
+-- Productos con precio mayor a 100, ordenados de mayor a menor
+SELECT ProductID, Name, ListPrice
+FROM Production.Product
+WHERE ListPrice > 100
+ORDER BY ListPrice DESC;
+
+-- IS NULL: productos sin fecha de fin de venta
+SELECT ProductID, Name, SellEndDate
+FROM Production.Product
+WHERE SellEndDate IS NULL;
+
+-- LIKE: personas cuyo apellido empieza con 'S'
+SELECT BusinessEntityID, LastName, FirstName
+FROM Person.Person
+WHERE LastName LIKE 'S%';
+
+-- IN: productos de color rojo, negro o plateado
+SELECT ProductID, Name, Color
+FROM Production.Product
+WHERE Color IN ('Red', 'Black', 'Silver');
+
+-- BETWEEN: productos con precio entre 100 y 500
+SELECT ProductID, Name, ListPrice
+FROM Production.Product
+WHERE ListPrice BETWEEN 100 AND 500;
+
+-- Mostrar productos con estado según si tienen color o no
+SELECT ProductID, Name, 
+       CASE 
+           WHEN Color IS NULL THEN 'Sin color'
+           ELSE Color
+       END AS EstadoColor
+FROM Production.Product;
+
+-- Empleados con su nombre y puesto
+SELECT p.BusinessEntityID, p.FirstName, p.LastName, e.JobTitle
+FROM HumanResources.Employee e
+INNER JOIN Person.Person p
+    ON e.BusinessEntityID = p.BusinessEntityID;
