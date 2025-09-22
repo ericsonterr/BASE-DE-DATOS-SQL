@@ -139,4 +139,3 @@ SELECT LastName
 FROM Person.Person
 WHERE LastName LIKE 'T%'
 ORDER BY Apellido;
-
