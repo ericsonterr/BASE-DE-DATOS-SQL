@@ -222,7 +222,7 @@ BEGIN
             ROLLBACK TRANSACTION;
 
         PRINT 'Error en la transacción. Cambios revertidos.';
-        PRINT ERROR_MESSAGE(); -- Muestra el mensaje del error
+        PRINT ERROR_MESSAGE(); 
     END CATCH
 END;
 GO
