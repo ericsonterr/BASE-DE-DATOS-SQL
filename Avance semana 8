@@ -200,8 +200,11 @@ PIVOT (
     FOR Año IN ([2011], [2012], [2013], [2014])
 ) AS pvt;
 
+
 Consulta 14
 -- Procedimiento almacenado con transacción y manejo de errores
+
+GO
 
 CREATE PROCEDURE Production.AumentarPrecioProducto
     @Porcentaje DECIMAL(5,2)
@@ -222,7 +225,7 @@ BEGIN
             ROLLBACK TRANSACTION;
 
         PRINT 'Error en la transacción. Cambios revertidos.';
-        PRINT ERROR_MESSAGE(); 
+        PRINT ERROR_MESSAGE(); -- Muestra el mensaje del error
     END CATCH
 END;
 GO
