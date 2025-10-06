@@ -198,3 +198,34 @@ PIVOT (
     FOR Año IN ([2011], [2012], [2013], [2014])
 ) AS pvt;
 
+Consulta 14
+-- Procedimiento almacenado con transacción y manejo de errores
+
+CREATE PROCEDURE Production.AumentarPrecioProducto
+    @Porcentaje DECIMAL(5,2)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        UPDATE Production.Product
+        SET ListPrice = ListPrice * (1 + @Porcentaje / 100);
+
+        COMMIT TRANSACTION;
+        PRINT 'Transacción completada exitosamente. Precios actualizados.';
+    END TRY
+    BEGIN CATCH
+
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
+
+        PRINT 'Error en la transacción. Cambios revertidos.';
+        PRINT ERROR_MESSAGE(); -- Muestra el mensaje del error
+    END CATCH
+END;
+GO
+
+EXEC Production.AumentarPrecioProducto @Porcentaje = 10;
+
+SELECT TOP 10 ProductID, Name, ListPrice
+FROM Production.Product;
