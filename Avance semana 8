@@ -234,3 +234,31 @@ EXEC Production.AumentarPrecioProducto @Porcentaje = 10;
 
 SELECT TOP 10 ProductID, Name, ListPrice
 FROM Production.Product;
+
+-- Función que calcula el nuevo precio de un producto con aumento con aumento porcentual
+
+GO
+
+CREATE FUNCTION dbo.CalcularNuevoPrecio
+(
+    @PrecioActual DECIMAL(10,2),
+    @PorcentajeAumento DECIMAL(5,2)
+)
+RETURNS DECIMAL(10,2)
+AS
+BEGIN
+    DECLARE @NuevoPrecio DECIMAL(10,2);
+
+    SET @NuevoPrecio = @PrecioActual * (1 + @PorcentajeAumento / 100);
+
+    RETURN @NuevoPrecio;
+END;
+GO
+
+SELECT 
+    ProductID, 
+    Name AS Producto, 
+    ListPrice AS PrecioActual,
+    dbo.CalcularNuevoPrecio(ListPrice, 10) AS PrecioConAumento
+FROM Production.Product
+WHERE ListPrice IS NOT NULL;
